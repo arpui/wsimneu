@@ -1,0 +1,20 @@
+============================================================
+PART A — Paràmetres de normalització (transforms)
+============================================================
+
+  N_max_p99                 = 308
+  N_max_p999                = 526
+  R_max                     = 20
+  columns                   = 'r_norm,z_norm,t_norm,edep_norm,partID,procID'  [string]
+  edep_offset_MeV           = 1e-12
+  log_E_in_mean             = -2.35077
+  log_E_in_std              = 3.687
+  log_edep_mean             = -4.50162
+  log_edep_std              = 3.01797
+  log_t_mean                = 3.62964
+  log_t_std                 = 1.92087
+  t_offset_ns               = 0.001
+  z_mean                    = -16.9114
+  z_std                     = 10.6791
+
+Nota: z_mean i z_std en cm (espai físic).

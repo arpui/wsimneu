@@ -1,0 +1,72 @@
+{
+  "0.025eV": {
+    "spearman_truth": null,
+    "spearman_gen": 0.46951311837313786,
+    "mi_truth": null,
+    "mi_gen": 0.3065219615993438,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "1eV": {
+    "spearman_truth": null,
+    "spearman_gen": 0.3429100896909178,
+    "mi_truth": null,
+    "mi_gen": 0.20885513180309434,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "1keV": {
+    "spearman_truth": null,
+    "spearman_gen": 0.2894598496448896,
+    "mi_truth": null,
+    "mi_gen": 0.35769202751140716,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "100keV": {
+    "spearman_truth": null,
+    "spearman_gen": 0.09221664304325759,
+    "mi_truth": null,
+    "mi_gen": 0.16745204994127733,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "1MeV": {
+    "spearman_truth": null,
+    "spearman_gen": 0.017950855239027914,
+    "mi_truth": null,
+    "mi_gen": 0.09545813784233634,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "5MeV": {
+    "spearman_truth": null,
+    "spearman_gen": -0.024116681181527596,
+    "mi_truth": null,
+    "mi_gen": 0.02866262147488987,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "14.1MeV": {
+    "spearman_truth": null,
+    "spearman_gen": -0.09113961822357156,
+    "mi_truth": null,
+    "mi_gen": 0.021518131828971346,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  }
+}
