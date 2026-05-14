@@ -6,7 +6,7 @@ Tracking de runs d'entrenament del model neutron cascade amb condicionar per ene
 
 | Run | Model | n_bins | Iteracions | feature_scale | Status |
 |-----|-------|--------|------------|---------------|--------|
-| [run_013](runs/run_013.md) | Linear (control) | — | 100k | 2.0 | ✅ Completat |
+| [run_013](../runs/run_013.md) | Linear (control) | — | 100k | 2.0 | ✅ Completat |
 | [run_014](runs/run_014.md) | Model B | 8 | 100k | 2.0 | ✅ Completat |
 | [run_015](runs/run_015.md) | Model B | 16 | 100k | 2.0 | ✅ Completat |
 | [run_016](runs/run_016.md) | Model B | 32 | 100k | 2.0 | ✅ Completat |
