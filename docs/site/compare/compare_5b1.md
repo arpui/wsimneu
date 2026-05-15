@@ -110,9 +110,17 @@ Model B amb `n_energy_bins` **no és una millora** respecte a Linear embedding:
 
 ## Gràfics comparatius
 
-- [PDF unificat (6 runs)](../../docs/vault/results/figures/compare_5b1_unified_all6/compare_all.pdf)
-- [W1 metrics heatmap](../../docs/vault/results/figures/compare_5b1_unified_all6/Z_metrics_heatmap.png)
-- [Metrics summary](../../docs/vault/results/figures/compare_5b1_unified_all6/M_metrics_summary.png)
+### PDF unificat (6 runs)
+
+[PDF unificat (6 runs)](../images/results/figures/compare_5b1_unified_all6/compare_all.pdf)
+
+### W1 metrics heatmap
+
+![W1 metrics heatmap](../images/results/figures/compare_5b1_unified_all6/Z_metrics_heatmap.png)
+
+### Metrics summary
+
+![Metrics summary](../images/results/figures/compare_5b1_unified_all6/M_metrics_summary.png)
 
 ---
 
