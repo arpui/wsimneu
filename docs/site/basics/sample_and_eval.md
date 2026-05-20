@@ -19,16 +19,16 @@
 python scripts/compare_runs_multiE.py \
     --runs runs/nc_multiE/run_007 runs/nc_multiE/run_010 \
     --labels "run_007" "run_010" \
-    --markdown docs/vault/results/figures/compare_007_010.md
+    --markdown docs/site/images/runs/compare_007_010.md
 
 # 5. Comparació visual
 python scripts/compare_runs_figures.py \
-    --fig-dirs docs/vault/results/figures/diagnose_run_007 \
-               docs/vault/results/figures/diagnose_run_010 \
+    --fig-dirs docs/site/images/runs/diagnose_run_007 \
+               docs/site/images/runs/diagnose_run_010 \
     --run-dirs runs/nc_multiE/run_007 runs/nc_multiE/run_010 \
     --labels "run_007" "run_010" \
     --layout rows --shared-parts A B \
-    --out docs/vault/results/figures/compare_007_010 \
+    --out docs/site/images/runs/compare_007_010 \
     --pdf
 ```
 
@@ -164,12 +164,12 @@ Exporta a markdown amb ✅/WRN/BAD per cada mètrica i energia.
 ```bash
 # PDF amb totes les figures comparades
 python scripts/compare_runs_figures.py \
-    --fig-dirs docs/vault/results/figures/diagnose_run_001 \
-               docs/vault/results/figures/diagnose_run_002 \
+    --fig-dirs docs/site/images/runs/diagnose_run_001 \
+               docs/site/images/runs/diagnose_run_002 \
     --run-dirs runs/nc_multiE/run_001 runs/nc_multiE/run_002 \
     --labels "run_001" "run_002" \
     --layout rows --shared-parts A B \
-    --out docs/vault/results/figures/compare_001_002 \
+    --out docs/site/images/runs/compare_001_002 \
     --pdf
 ```
 

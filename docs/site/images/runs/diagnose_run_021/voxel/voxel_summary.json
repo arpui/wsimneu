@@ -1,0 +1,72 @@
+{
+  "0.025eV": {
+    "spearman_truth": 0.40502888064318315,
+    "spearman_gen": 0.465795450648304,
+    "mi_truth": 0.26548216707579725,
+    "mi_gen": 0.306050733287911,
+    "map_pearson_Etotal": 0.8938673906851623,
+    "pearson_emean_z": 0.40956280294981406,
+    "pearson_estd_z": 0.9452539935887779,
+    "estd_ratio_mean": 0.9821884204158938
+  },
+  "1eV": {
+    "spearman_truth": 0.32897988557897456,
+    "spearman_gen": 0.3369290212709892,
+    "mi_truth": 0.2134431966225806,
+    "mi_gen": 0.20841040391041274,
+    "map_pearson_Etotal": 0.9355191318491873,
+    "pearson_emean_z": 0.3656037146029576,
+    "pearson_estd_z": 0.9788359077215996,
+    "estd_ratio_mean": 1.0140462274256894
+  },
+  "1keV": {
+    "spearman_truth": 0.28896587397232715,
+    "spearman_gen": 0.2842924443307991,
+    "mi_truth": 0.3719843761129643,
+    "mi_gen": 0.3629393513415731,
+    "map_pearson_Etotal": 0.9157050697774893,
+    "pearson_emean_z": 0.6211852096612434,
+    "pearson_estd_z": 0.9768144385158546,
+    "estd_ratio_mean": 1.0118154313367471
+  },
+  "100keV": {
+    "spearman_truth": 0.08600829858175457,
+    "spearman_gen": 0.0902972746569495,
+    "mi_truth": 0.17678800484042265,
+    "mi_gen": 0.17746352411532,
+    "map_pearson_Etotal": 0.9875618016533828,
+    "pearson_emean_z": 0.6286210115976414,
+    "pearson_estd_z": 0.9762250495831566,
+    "estd_ratio_mean": 0.9991281331993548
+  },
+  "1MeV": {
+    "spearman_truth": 0.016752196412754553,
+    "spearman_gen": 0.023275606670048517,
+    "mi_truth": 0.08798363065025856,
+    "mi_gen": 0.09578544722481176,
+    "map_pearson_Etotal": 0.9987095298121397,
+    "pearson_emean_z": 0.850245050405279,
+    "pearson_estd_z": 0.9801590590272349,
+    "estd_ratio_mean": 0.9630716444518274
+  },
+  "5MeV": {
+    "spearman_truth": -0.031751897968764646,
+    "spearman_gen": -0.021575957112397477,
+    "mi_truth": 0.025781053788337595,
+    "mi_gen": 0.02700525951896893,
+    "map_pearson_Etotal": 0.996048354106567,
+    "pearson_emean_z": 0.9829097959762937,
+    "pearson_estd_z": 0.7345673648217446,
+    "estd_ratio_mean": 0.9422203440269995
+  },
+  "14.1MeV": {
+    "spearman_truth": -0.08791173916377043,
+    "spearman_gen": -0.09482322040963961,
+    "mi_truth": 0.017456249656969,
+    "mi_gen": 0.02263563740735834,
+    "map_pearson_Etotal": 0.9902911076200352,
+    "pearson_emean_z": 0.5317470670519552,
+    "pearson_estd_z": 0.8714246722121688,
+    "estd_ratio_mean": 0.9913777577875671
+  }
+}

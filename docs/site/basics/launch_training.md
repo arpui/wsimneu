@@ -125,7 +125,7 @@ runs/nc_multiE/run_NNN/
 ./scripts/diagnose_run.sh runs/nc_multiE/run_NNN --no-truth
 ```
 
-**Sortida**: `docs/vault/results/figures/diagnose_run_NNN/`
+**Sortida**: `docs/site/images/runs/diagnose_run_NNN/`
 - `A_transforms.png` — transforms del dataset
 - `B_z_per_energy_truth.png` — z_mean per energia
 - `C_z_phys.png` — histograma z físic (truth + generated)
@@ -137,22 +137,21 @@ runs/nc_multiE/run_NNN/
 - `M_metrics_summary.png` — gràfic de mètriques
 - `Z_metrics_heatmap.png` — heatmap de totes les mètriques
 - `voxel/` — mapes voxelitzats E(z,r) amb Spearman i MI
+- `edep_run_NNN_{E}.png` — espectre edep per energia
 
-**Part G (edep spectra)**: `docs/vault/results/figures/nhits/`
+**Edep spectra grid**: `docs/site/images/nhits/`
 - `edep_run_NNN_all.png` — grid combinat totes energies
-- `edep_run_NNN_<E>.png` — figures individuals per energia
 
-**Auto-sync al site**: Després del diagnose, `update_site_images.py` copia
-automàticament les figures PNG a `docs/site/images/runs/diagnose_run_NNN/`.
+**Isoletàrgic**: `docs/site/images/isoletargic/`
+- `isoletargic_{E}.png` — versions isoletàrgiques
 
-**Nota**: El diagnose genera `M_metrics.md` automàticament. Les figures C/D/E mostren **blau = truth**, **taronja = generated**.
+**Nota**: El diagnose genera `M_metrics.md` automàticament. Les figures C/D/E mostren **blau = truth**, **taronja = generated**. Totes les figures van directament al seu destí final — no cal cap pas de sincronització.
 
 ---
 
 ## Step 5: Pull (ailab → PC)
 
-**Nota**: El diagnòstic (Step 4) sincronitza automàticament les figures
-a `docs/site/images/`. Només cal fer pull per les dades addicionals
+**Nota**: El diagnòstic (Step 4) genera les figures directament a `docs/site/images/`. Només cal fer pull per les dades addicionals
 (stats.json, configs, train_log.csv).
 
 ```bash
@@ -170,40 +169,23 @@ a `docs/site/images/`. Només cal fer pull per les dades addicionals
 ```
 
 **Sincronitza**:
-1. Figures de `docs/vault/results/figures/` (PNG, PDF, JSON)
+1. Figures de `docs/site/images/` (PNG, PDF, JSON, MD)
 2. Fitxers d'anàlisi dels runs (`config.json`, `run_config.json`, `train_log.csv`, `stats.json`)
 3. Sanity check figures (`notebooks/figs/sanity_*/`)
 
-### 5.1 Sync manual al site (GitHub Pages)
+### 5.1 Publicar al GitHub Pages
 
-Si cal sincronitzar figures manualment (no cal habitualment, es fa automaticament al diagnose):
+Totes les figures es generen directament a `docs/site/images/` durant el diagnose.
+Només cal commit i push.
 
 ```bash
-# Un run concret:
-python scripts/update_site_images.py --runs 019
-
-# Figures de comparacio:
-python scripts/update_site_images.py --compare compare_007_010_019
-
-# Tot el vault:
-python scripts/update_site_images.py
-
-# Verificar enllaços del site:
-python scripts/update_site_images.py --verify-links
-```
-
-**Publicar al GitHub Pages**:
-```bash
-# 1. Assegurar-sync:
-python scripts/update_site_images.py
-
-# 2. Commit i push (només docs/site/, no runs/):
+# Commit i push (només docs/site/):
 git add docs/site/
-git commit -m "docs(site): sync figures diagnose_run_019"
+git commit -m "docs(site): diagnose runs NNN"
 git push
 ```
 
-**Important**: `docs/site/images/` NO es modifica manualment. Sempre via `update_site_images.py`.
+**Important**: No cal cap script de sincronització. Les figures van directament al seu destí.
 
 ---
 
@@ -217,7 +199,7 @@ python scripts/compare_runs_multiE.py \
     --runs runs/nc_multiE/run_007 \
            runs/nc_multiE/run_010 \
     --labels "run_007" "run_010" \
-    --markdown docs/vault/results/figures/compare_007_010.md
+    --markdown docs/site/compare/compare_007_010.md
 
 # Només energies ràpides
 python scripts/compare_runs_multiE.py \
@@ -248,8 +230,8 @@ python scripts/compare_runs_multiE.py \
 # Comparació visual de figures
 python scripts/compare_runs_figures.py \
     --fig-dirs \
-        docs/vault/results/figures/diagnose_run_007 \
-        docs/vault/results/figures/diagnose_run_010 \
+        docs/site/images/runs/diagnose_run_007 \
+        docs/site/images/runs/diagnose_run_010 \
     --run-dirs \
         runs/nc_multiE/run_007 \
         runs/nc_multiE/run_010 \
@@ -257,8 +239,8 @@ python scripts/compare_runs_figures.py \
     --layout rows \
     --shared-parts A B \
     --truth-path mc/geant4/neutron_cascade/build/neutron_cascade_multiE_7E_preprocessed.h5 \
-    --nhits-dir docs/vault/results/figures/nhits \
-    --out docs/vault/results/figures/compare_007_010 \
+    --nhits-dir docs/site/images/nhits \
+    --out docs/site/images/compare/compare_007_010 \
     --pdf
 ```
 
@@ -289,19 +271,19 @@ python scripts/compare_runs_figures.py \
 # Histograma edep per energia (un run)
 python scripts/nhits_histogram.py \
     --run-dir runs/nc_multiE/run_NNN \
-    --out docs/vault/results/figures/nhits_run_NNN
+    --out docs/site/images/nhits/nhits_run_NNN
 
 # Histograma edep comparatiu (tots els runs d'un directori)
 python scripts/nhits_histogram.py \
     --all-runs runs/nc_multiE/ \
-    --out docs/vault/results/figures/nhits_all
+    --out docs/site/images/nhits/nhits_all
 
 # Amb etiquetes personalitzades
 python scripts/nhits_histogram.py \
     --run-dirs runs/nc_multiE/run_007 \
                runs/nc_multiE/run_010 \
     --labels "run_007" "run_010" \
-    --out docs/vault/results/figures/nhits_007_010
+    --out docs/site/images/compare/nhits_007_010
 ```
 
 ---
@@ -316,38 +298,37 @@ python scripts/nhits_histogram.py \
 # 2. Sampling
 ./scripts/sample_run.sh runs/nc_multiE/run_NNN
 
-# 3. Diagnosi (amb truth + auto-sync al site)
+# 3. Diagnosi (figures directament a docs/site/images/)
 ./scripts/diagnose_run.sh runs/nc_multiE/run_NNN
 ```
 
 ### PC
 ```bash
-# 4. Sync resultats (site ja sync al Step 3)
+# 4. Pull configs i stats
 ./scripts/pull_neutron_cascade.sh
 
 # 5. Comparació quantitativa
 python scripts/compare_runs_multiE.py \
     --runs runs/nc_multiE/run_007 runs/nc_multiE/run_010 \
     --labels "run_007" "run_010" \
-    --markdown docs/vault/results/figures/compare_007_010.md
+    --markdown docs/site/compare/compare_007_010.md
 
 # 6. Comparació visual (PDF)
 python scripts/compare_runs_figures.py \
-    --fig-dirs docs/vault/results/figures/diagnose_run_007 \
-               docs/vault/results/figures/diagnose_run_010 \
+    --fig-dirs docs/site/images/runs/diagnose_run_007 \
+               docs/site/images/runs/diagnose_run_010 \
     --run-dirs runs/nc_multiE/run_007 runs/nc_multiE/run_010 \
     --labels "run_007" "run_010" \
     --layout rows \
     --shared-parts A B \
     --truth-path mc/geant4/neutron_cascade/build/neutron_cascade_multiE_7E_preprocessed.h5 \
-    --nhits-dir docs/vault/results/figures/nhits \
-    --out docs/vault/results/figures/compare_007_010 \
+    --nhits-dir docs/site/images/nhits \
+    --out docs/site/images/compare/compare_007_010 \
     --pdf
 
-# 7. (Opcional) Actualitzar site web
-python scripts/update_site_images.py
+# 7. Commit i push (figures ja estan al seu lloc)
 git add docs/site/
-git commit -m "docs(site): sync figures"
+git commit -m "docs(site): diagnose runs"
 git push
 ```
 
@@ -361,7 +342,7 @@ Si no tens accés a l'ailab, pots fer diagnòstic bàsic:
 # Diagnose sense truth (només generats)
 python scripts/diagnose.py \
     --run-dir runs/nc_multiE/run_NNN \
-    --out docs/vault/results/figures/diagnose_run_NNN \
+    --out docs/site/images/runs/diagnose_run_NNN \
     --no-truth
 
 # Comparació quantitativa (només stats.json)

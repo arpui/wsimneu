@@ -1,0 +1,155 @@
+# Estratègies per millorar pics a EPiC-FM (revisió contextualitzada)
+
+## Context del model
+
+**EPiC-FM** té aquest pipeline:
+
+1. Rep `E_in` com a escalar continu.
+2. Genera N hits amb `(r, z, t, edep)`.
+3. L'histograma final és una suma estocàstica dels hits.
+
+Les ressonàncies són estructures fines a l'espectre d'`edep`. El model no té cap mecanisme intern per "saber" on col·locar-les:
+
+- L'embedding d'`E_in` només determina la distribució general de hits.
+- No hi ha cap head específic de ressonància ni terme de loss que penalitzi la pèrdua de pics.
+- Amb 500k iteracions, el model aprèn la distribució marginal (W1 baixa) però no l'estructura fina (RI ~0.1).
+
+**Restricció del projecte:** no es pot canviar l'arquitectura a una densitat contínua d'`edep` (això seria Track 2), perquè es perdria la cascada de hits que és el nucli del que es vol estudiar.
+
+---
+
+## Per què el "curvature loss" original no encaixa bé
+
+Per a EPiC-FM, el loss estàndard és un **MSE sobre el camp de velocitats per hit**. Cada hit es tracta contra la seva distribució conditional flow matching. El loss **no veu mai l'histograma agregat** — i per tant tampoc en veu la curvatura. Aplicar `w_i = 1 + α·|y''_i|` no té punt d'aplicació natural a nivell de hit.
+
+Funcionaria si tinguessis un histograma diferenciable a la sortida, però llavors ja estàs introduint maquinària nova. Existeix una versió correcta d'aquesta idea sense canviar l'arquitectura (opció 2 més avall).
+
+---
+
+## Opcions reals, ordenades per cost/risc
+
+### 1. Fourier features sobre `edep` dins del camp de velocitats
+
+**Cost gairebé zero. Sovint el guany més gran.**
+
+És l'opció més infravalorada per a aquest tipus de problema. El motiu pel qual una xarxa amb 500k iteracions aprèn bé el bulk i no els pics no és normalment falta de capacitat ni de senyal: és que les MLPs tenen un *spectral bias* documentat cap a baixes freqüències. Pics fins en `edep` són alta freqüència en l'espai d'entrada.
+
+**Implementació:**
+
+```
+edep → [sin(2π · B · edep), cos(2π · B · edep)]   amb B = matriu de freqüències
+```
+
+S'aplica dins l'embedding de coordenades del hit, abans que entrin al backbone. És una capa de pre-processat — no toca ni el loss ni el pipeline de mostreig.
+
+En models tipus NeRF / SIREN / score-based, aquest canvi és el que separa "borrós" de "afilat" en estructures fines. Pot perfectament fer pujar el RI sense res més.
+
+---
+
+### 2. Loss auxiliar histograma-aware via soft binning
+
+**Cost moderat. Principiat.**
+
+Aquí és on encaixa l'esperit del "curvature loss" original però implementat correctament dins del paradigma de hits.
+
+**Esquema:**
+
+- A cada batch de training, després del pas FM estàndard, genera un mini-rollout d'hits amb el model actual condicionat a un `E_in` (pot ser un sol pas Euler com a proxy — no cal l'ODE complet).
+- Soft binning dels hits (kernel gaussià per bin o assignació diferenciable) → histograma diferenciable `ĥ`.
+- Comparació amb l'histograma de truth `h` mitjançant un terme curvatura-ponderat **o** un terme FFT, com a loss auxiliar petit:
+
+```
+L_total = L_FM + λ · L_histo_spectral
+```
+
+amb `λ` baix (0.01–0.1) perquè el FM continuï dominant.
+
+**Per què funciona:** el gradient flueix a través del soft binning fins a les posicions d'`edep` dels hits, **atraient-los cap a on hi ha pic**. És exactament l'"atractor cap al pic" que es volia originalment, però dins del paradigma de hits.
+
+**Cost real:** una funció de soft histogram diferenciable (~50 línies) i un rollout extra per batch (encariment ~1.5×). Encara és Pass 1, no arquitectura nova.
+
+---
+
+### 3. Importància en el sampling de training
+
+**Cost trivial. Complementari.**
+
+Durant el training, sobre-mostrejar events on els pics són més rellevants (`E_in` a regions on les ressonàncies dominen).
+
+No cal etiquetar pics: es pot fer indirectament mostrejant més events on la **variància inter-event de l'histograma** sigui alta, que és proxy de presència d'estructura fina.
+
+No resol el problema, però fa que el gradient gasti més capacitat als llocs que importen.
+
+---
+
+### 4. Self-conditioning a inferència
+
+**Zero canvis a training. Opcional.**
+
+Si fas inferència amb molts passos d'ODE, prova auto-condicionament: el model rep com a entrada extra una passada anterior de l'estat. Sovint refinà estructures fines sense re-entrenar. És barat de provar i pot raspar uns punts de RI.
+
+---
+
+## El sostre estructural — ser honest
+
+Hi ha una part del problema que no es pot empènyer més enllà sense canviar el paradigma. Si la xarxa modela els hits com a **punts intercanviables d'una distribució conditional**, l'amplada efectiva dels pics que es poden reproduir depèn de:
+
+- La finesa del binning amb què s'entrena/avalua.
+- La capacitat espectral del camp de velocitats (això és el que ataca Fourier features).
+- El nombre de hits per event — pics estrets necessiten estadística suficient o emergiran com a soroll.
+
+Amb hits discrets, fins i tot amb un model **perfecte**, el RI no pot superar el que permet l'estadística poissoniana per bin.
+
+**Recomanació:** calcular aquest sostre teòric (variància esperada per bin amb el nombre típic de hits) i comparar-lo amb el RI ~0.1 observat.
+
+- Si el sostre és ~0.3 → hi ha marge real, val la pena.
+- Si el sostre és ~0.12 → ja s'està a prop del límit estructural i el guany realista serà modest.
+
+---
+
+## Recomanació concreta
+
+| Ordre | Acció | Esforç | Probabilitat de millora |
+|-------|-------|--------|-------------------------|
+| 1 | Fourier features sobre `edep` | ~1 dia | Alta |
+| 2 | Soft histogram + loss espectral auxiliar | ~1 setmana | Moderada-alta |
+| 3 | Importance sampling per regions amb pics | Hores | Modesta (complement) |
+| 4 | Self-conditioning a inferència | Hores | Modesta (polit) |
+
+**No tocar arquitectura.** Les opcions anteriors respecten la cascada de hits que es vol mantenir.
+
+**Sobre la "Capa de sortida parametritzada"** del document anterior: no aplica a aquesta arquitectura. Va quedar marcada com a opció però requeriria sortir del paradigma de hits, que és el que volem preservar.
+
+---
+
+## Implementació (2026-05-15)
+
+### Fourier features per a edep — IMPLEMENTAT
+
+**Files modificades:**
+- `src/genai_mc/neutron_cascade/model_epic.py` — nova classe `FourierFeatureEmbedding`, paràmetre `edep_fourier_dim`
+- `scripts/train_neutron_cascade_v5_epic.py` — argument `--edep-fourier-dim`
+- `scripts/sample_neutron_cascade.py` — passa `edep_fourier_dim` des de `run_config.json`
+
+**Com funciona:**
+- Abans del `hit_in`, el canal `edep` del hit es transforma: `edep → [sin(2π·B·edep), cos(2π·B·edep)]`
+- `B` és una matriu fixa de freqüències aleatòries (Gaussian, no aprés)
+- `hit_in` passa de `Linear(4, 256)` a `Linear(3 + edep_fourier_dim, 256)`
+- Sense canvis al loss, al pipeline de sampling, ni a l'arquitectura EPiC
+
+**Cost:** +7,936 paràmetres amb `edep_fourier_dim=32` (total model: 2,141,188 vs 2,133,252 sense).
+
+**Ús:**
+```bash
+# Training
+./scripts/train_run.sh runs/nc_multiE/run_NNN --edep-fourier-dim 32
+# o directe:
+uv run python scripts/train_neutron_cascade_v5_epic.py \
+  --data /path/to/data.h5 --output runs/nc_fourier/run_001 \
+  --edep-fourier-dim 32
+
+# Sampling (llegeix run_config.json automàticament)
+./scripts/sample_run.sh runs/nc_fourier/run_001
+```
+
+**Proper pas:** entrenar un model amb `--edep-fourier-dim 32` i comparar RI, W1(z), W1(log_edep) amb el baseline sense Fourier.

@@ -76,14 +76,14 @@ Quan tots estiguin fets:
 3. Comparar amb:
    ```bash
    python scripts/compare_runs_figures.py \
-     --fig-dirs docs/vault/results/figures/diagnose_run_010 \
-                docs/vault/results/figures/diagnose_run_013 \
-                docs/vault/results/figures/diagnose_run_015 \
-                docs/vault/results/figures/diagnose_run_016 \
+     --fig-dirs docs/site/images/runs/diagnose_run_010 \
+                docs/site/images/runs/diagnose_run_013 \
+                docs/site/images/runs/diagnose_run_015 \
+                docs/site/images/runs/diagnose_run_016 \
      --run-dirs runs/nc_multiE/run_010 runs/nc_multiE/run_013 \
                 runs/nc_multiE/run_015 runs/nc_multiE/run_016 \
      --labels "run_010" "run_013" "run_015" "run_016" \
-     --out docs/vault/results/figures/compare_5b1 --pdf
+     --out docs/site/images/runs/compare_5b1 --pdf
    ```
 
 ## Resultats (completats 2026-05-14)

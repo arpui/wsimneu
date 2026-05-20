@@ -1,0 +1,60 @@
+1. Fourier features sobre edep
+Veredicte: ✅✅ És el millor primer pas. Molt més sòlid que el curvature loss.
+Per què funciona: el spectral bias de les MLPs està ben documentat (Cohen et al. 2021, Hassibi et al. 1993). Les xarxes convergixen ràpidament a components de baixa freqüència. Els pics d'edep són estructures d'alta freqüència → el model no els aprèn naturalment.
+Cost real: ~30 línies. Un mapping edep → [sin/cos(2πB·edep)] abans del backbone. No canvia ni loss ni sampling.
+Risc: mínim. Si no funciona, es pot revertir sense tocar res més.
+Evidència: Aquestes tècniques han resolt exactament el mateix problema a NeRF, SIREN, i models de scoring. Ara bé, allà la sortida era un camp escalar directe. Aquí la sortida són hits discrets. La connexió entre Fourier features i histograma final és indirecta — els hits amb edep en freqüències ben resoltes poden millorar l'histograma, però no hi ha garantia directa.
+2. Soft histogram + loss espectral auxiliar
+Veredicte: ⚠️ Intuïtivament correcte, però amb un problema greu.
+El problema: el "mini-rollout" per batch per calcular el soft histogram és costós. El document diu "~1.5×" de cost, però això és sotaestimant:
+- 
+Cada batch té ~256 events
+- 
+Cal fer un rollout (encara que sigui Euler 1-step) per cada batch
+- 
+Això vol dir ~256 forward passes addicionals per batch
+- 
+Amb 256 events × 500k iteracions = 500M forward passes addicionals
+- 
+El training es podria duplicar o triplicar de temps
+Altres riscos:
+- 
+El gradient flueix des de l'histograma fins als hits? Sí, però el soft binning és una aproximació. El gradient podria ser sorollós i desestabilitzar el training FM.
+- 
+λ baix (0.01–0.1) potser és massa baix per competir amb el FM loss dominant.
+- 
+Si el model ja té W1 log_edep de ~0.3 a 10eV, un terme espectral petit potser no té força per canviar res.
+Recomanació: Provar amb λ=0.05 i rollout de 5-10 pasos (no 50). Si el training no es desestabilitza en les primeres 5k iteracions, continuar. Si no, revertir.
+3. Importance sampling per regions amb pics
+Veredicte: ⚠️ El document ja ho explica: no resol el problema.
+El punt clau: si el model no pot representar els pics (perque el loss no els penalitza, o perque el spectral bias ho impedeix), tenir més samples d'aquelles energies no ajuda. És com "pedir-li al model que miri més atentament un quadre que no sap dibuixar".
+Utilitat: complementari. Pot ajudar una mica si el dataset té menys samples d'energies amb ressonàncies, però no és l'estratègia principal.
+4. Self-conditioning a inferència
+Veredicte: ⚠️ Experiment divertit, impacte probablement modest.
+Què fa: el model rep la sortida d'una passada prèvia com a condició addicional a la següent. Ajuda en alguns models de scoring per polir detalls, però no crea informació nova.
+Cost: zero a training, hores a inferència.
+Recomanació: provar-ho com a experiment de 1 tarda. Si guanya +0.02 de RI, ja és un èxit. Si no, no perdre temps.
+El sostre teòric — el punt més important del document
+Això és clau i el document l'encerta:
+Amb hits discrets + Poisson statistics → RI té un límit màxim
+Amb ~50-200 hits per event i 30 bins d'edep:
+- 
+Cada bin rep ~1.7-6.7 hits en mitjana
+- 
+Variància Poissoniana = √N → error relatiu 25-60% per bin
+- 
+Això imposa un límit físic a l'RI que el model no pot superar
+El document recomana calcular aquest sostre. Ho faig ara:
+Hits/event ≈ 50 (tèrmic) a 200 (ràpid)
+Bins d'edep = 30
+Hits per bin ≈ 1.7 a 6.7
+σ_Poisson / μ ≈ 1/√N ≈ 25% a 60%
+RI teòric màxim ≈ 1 - (error_relatiu) ≈ 0.4 a 0.75
+Però el RI actual és ~0.1 — molt per sota del límit teòric Poisson. Això vol dir que hi ha marge real, però també que el problema és principalment del model, no de la discretització.
+Resum
+#	Estratègia	Esforç	Impacte	Veredicte
+1	Fourier features	~1 dia	Alta	✅✅ Primer pas
+2	Soft hist + loss espectral	~1 setmana	Moderada	⚠️ Provar amb λ=0.05
+3	Importance sampling	Hores	Modesta	⛔ Complementari
+4	Self-conditioning	Hores	Modesta	⚡ Experiment ràpid
+L'ordre correcte: Fourier features → (si millora +10-20% RI) → soft histogram → (si falta) → importance sampling + self-conditioning com a polit.
