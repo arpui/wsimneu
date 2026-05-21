@@ -1,0 +1,122 @@
+{
+  "0.025eV": {
+    "spearman_truth": 0.37579547548646824,
+    "spearman_gen": 0.46768738001634386,
+    "mi_truth": 0.2462820418894051,
+    "mi_gen": 0.30199166085561535,
+    "map_pearson_Etotal": 0.8675475943180796,
+    "pearson_emean_z": 0.14981771700776514,
+    "pearson_estd_z": 0.8970682901470117,
+    "estd_ratio_mean": 0.9724014203486342
+  },
+  "0.15eV": {
+    "spearman_truth": 0.3824861663343687,
+    "spearman_gen": 0.39202314575211494,
+    "mi_truth": 0.2511760374999231,
+    "mi_gen": 0.25088817277924336,
+    "map_pearson_Etotal": 0.9177058158518134,
+    "pearson_emean_z": 0.49563302234099926,
+    "pearson_estd_z": 0.9528435098234924,
+    "estd_ratio_mean": 0.9862741878663853
+  },
+  "1eV": {
+    "spearman_truth": 0.33242304276197393,
+    "spearman_gen": 0.3616738434030417,
+    "mi_truth": 0.22258213553858539,
+    "mi_gen": 0.24469737201445604,
+    "map_pearson_Etotal": 0.9121921742627047,
+    "pearson_emean_z": 0.4419154510746037,
+    "pearson_estd_z": 0.9570365203101896,
+    "estd_ratio_mean": 0.9810113929644634
+  },
+  "7eV": {
+    "spearman_truth": 0.37082144433636266,
+    "spearman_gen": 0.3763809776051055,
+    "mi_truth": 0.36810649300544795,
+    "mi_gen": 0.3778670321099872,
+    "map_pearson_Etotal": 0.9391636838392893,
+    "pearson_emean_z": 0.4546616811051387,
+    "pearson_estd_z": 0.9841241209925609,
+    "estd_ratio_mean": 0.947228054903164
+  },
+  "50eV": {
+    "spearman_truth": 0.3617039839824313,
+    "spearman_gen": 0.3564189040809699,
+    "mi_truth": 0.3606053774412708,
+    "mi_gen": 0.35305679875873425,
+    "map_pearson_Etotal": 0.933881439900078,
+    "pearson_emean_z": 0.6177748757250855,
+    "pearson_estd_z": 0.9855786582706544,
+    "estd_ratio_mean": 0.9712577727802768
+  },
+  "350eV": {
+    "spearman_truth": 0.3052410364689784,
+    "spearman_gen": 0.32431106868845855,
+    "mi_truth": 0.3523486830108316,
+    "mi_gen": 0.37166104234909514,
+    "map_pearson_Etotal": 0.9326008855666156,
+    "pearson_emean_z": 0.5792897303345668,
+    "pearson_estd_z": 0.9760213819031642,
+    "estd_ratio_mean": 0.9983440616795557
+  },
+  "2.5keV": {
+    "spearman_truth": 0.2645015085160145,
+    "spearman_gen": 0.2357611192120327,
+    "mi_truth": 0.35913937402087004,
+    "mi_gen": 0.33716882300071904,
+    "map_pearson_Etotal": 0.9358917429527329,
+    "pearson_emean_z": 0.5792576607420092,
+    "pearson_estd_z": 0.9728137242708232,
+    "estd_ratio_mean": 1.0006893726944035
+  },
+  "18keV": {
+    "spearman_truth": 0.18954178812695327,
+    "spearman_gen": 0.1920935105589059,
+    "mi_truth": 0.28803866922033994,
+    "mi_gen": 0.2817800126324726,
+    "map_pearson_Etotal": 0.9493954400298709,
+    "pearson_emean_z": 0.5443891213925501,
+    "pearson_estd_z": 0.9481416475122103,
+    "estd_ratio_mean": 0.9533352505521618
+  },
+  "130keV": {
+    "spearman_truth": 0.07001877455937479,
+    "spearman_gen": 0.06494802663206502,
+    "mi_truth": 0.16497181832986918,
+    "mi_gen": 0.16127564036041298,
+    "map_pearson_Etotal": 0.9900476334916922,
+    "pearson_emean_z": 0.6291913164931839,
+    "pearson_estd_z": 0.9811370780700449,
+    "estd_ratio_mean": 0.9922880037005317
+  },
+  "900keV": {
+    "spearman_truth": 0.01217499839600401,
+    "spearman_gen": 0.004172056321436855,
+    "mi_truth": 0.08823859881051506,
+    "mi_gen": 0.08704228710227407,
+    "map_pearson_Etotal": 0.998794312321256,
+    "pearson_emean_z": 0.8358464478876028,
+    "pearson_estd_z": 0.985301165330499,
+    "estd_ratio_mean": 0.9813286505975507
+  },
+  "6MeV": {
+    "spearman_truth": -0.05444476827808226,
+    "spearman_gen": -0.06613851808535157,
+    "mi_truth": 0.039339264904559884,
+    "mi_gen": 0.03988342966187147,
+    "map_pearson_Etotal": 0.9961804105625204,
+    "pearson_emean_z": 0.9862132850410653,
+    "pearson_estd_z": 0.9408340187780541,
+    "estd_ratio_mean": 0.9780535858426984
+  },
+  "14.1MeV": {
+    "spearman_truth": -0.09007021922713757,
+    "spearman_gen": -0.092365355917698,
+    "mi_truth": 0.01974545305550556,
+    "mi_gen": 0.02041267622565141,
+    "map_pearson_Etotal": 0.9965250346763329,
+    "pearson_emean_z": 0.9560671125962491,
+    "pearson_estd_z": 0.9124320842158805,
+    "estd_ratio_mean": 0.9997009080240751
+  }
+}

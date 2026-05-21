@@ -1,0 +1,102 @@
+{
+  "0.025eV": {
+    "spearman_truth": 0.3963144607573321,
+    "spearman_gen": null,
+    "mi_truth": 0.2527505625846969,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "1eV": {
+    "spearman_truth": 0.33251183774273574,
+    "spearman_gen": null,
+    "mi_truth": 0.22015243403266768,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "10eV": {
+    "spearman_truth": 0.3661578186937554,
+    "spearman_gen": null,
+    "mi_truth": 0.36207805971487783,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "100eV": {
+    "spearman_truth": 0.33938595510438585,
+    "spearman_gen": null,
+    "mi_truth": 0.3591983359957011,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "1keV": {
+    "spearman_truth": 0.272114389356061,
+    "spearman_gen": null,
+    "mi_truth": 0.3540261375361014,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "10keV": {
+    "spearman_truth": 0.2281733865421011,
+    "spearman_gen": null,
+    "mi_truth": 0.3473959145783293,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "100keV": {
+    "spearman_truth": 0.09390204550728927,
+    "spearman_gen": null,
+    "mi_truth": 0.18513340622731456,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "1MeV": {
+    "spearman_truth": 0.014802385815412837,
+    "spearman_gen": null,
+    "mi_truth": 0.08492280966845728,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "5MeV": {
+    "spearman_truth": -0.026890584603211032,
+    "spearman_gen": null,
+    "mi_truth": 0.024325470928715908,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  },
+  "14.1MeV": {
+    "spearman_truth": -0.09100011716645028,
+    "spearman_gen": null,
+    "mi_truth": 0.018757698884772363,
+    "mi_gen": null,
+    "map_pearson_Etotal": null,
+    "pearson_emean_z": null,
+    "pearson_estd_z": null,
+    "estd_ratio_mean": null
+  }
+}

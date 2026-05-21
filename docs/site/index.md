@@ -2,11 +2,13 @@
 
 Tracking de runs d'entrenament del model neutron cascade amb condicionar per energia.
 
+**Última actualització**: 2026-05-21
+
 ---
 
 ## Resum executiu
 
-**Arquitectura actual** (tancada 🔒): EPiC-FM + Fourier dim=32 + embedding linear continu (`condZ`), `sum_scale_nmax=True`.
+**Arquitectura actual** (tancada 🔒): EPiC-FM + Fourier E_in dim=32 (GaussianRFF) + Fourier edep dim=32 + `condZ`, `sum_scale_nmax=True`.
 Flux complet:
 
 EpicFMModel.forward(p_t, g_init, t, E_in, mask) → velocitat per hit (B, N, 4). 
@@ -15,15 +17,14 @@ Les EPiC layers fan: pool global g ← φ_g(g, sum_pool(P), mean_pool(P), cond) 
 El Fourier embedding (FourierFeatureEmbedding) s'aplica sobre edep abans de hit_in, per trencar el spectral bias i aprendre pics fins. És un buffer fix (register_buffer), no s'entrena.
 Condicionament per E: o bé Linear(1→64) (continu) o bé Embedding(n_bins, 64) (discret, "Model B").
 
-**Referència seleccionada**: ⭐ **run_019** (Fourier dim=32, fs=2, condZ, 100k iter) — captura millor pics de ressonància (Peak Sharpness +45% a 1keV), mètriques ≈ run_010, visual superior en three_curves_edep.png.
+**Referència seleccionada**: ⭐ **run_023** (Fourier E_in edep dim=32, fs=2, 12 energies log-uniformes, 500k iter) — cobertura completa 0.025eV→14.1MeV amb 12 energies. Mètriques OK en totes les energies (z, edep_z, std, nhits).
 
-**Fase actual**: **Fase 7A finalitzada** (2026-05-18). run_019 consolidat com a referència definitiva.
+**Fase actual**: **Fase 7B finalitzada** (2026-05-20). run_023 completat amb 12 energies log-uniformes.
 
 **Millores futures** (planificades):
 - Loss espectral (ADR-011): 4 opcions dissenyades, pendents de validació
 - Track 2 — Discrete FM + procID (ADR-009): recerca oberta, branca paral·lela
-
-**Última actualització**: 2026-05-19
+- Peak_r0 a energies extremes (tèrmiques i >5MeV)
 
 ---
 
@@ -135,7 +136,7 @@ Amb Model B descartat, es va provar una altra estratègia per millorar la captur
 |-----|-------------|-----------|--------|
 | [run_019](runs/run_019.md) | Fourier dim=32 + Linear | 100k | ✅ Referència actual |
 | [run_020](runs/run_020.md) | Fourier dim=64 + Linear | 100k | ❌ Hipòtesi refutada |
-| [run_021](runs/run_021.md) | GaussianRFF E_in dim=32 + Fourier edep | 100k | ⏳ Post-run pending |
+| [run_021](runs/run_021.md) | GaussianRFF E_in dim=32 + Fourier edep | 100k | ✅ **Validat** |
 
 **Resultats run_019 (Fourier dim=32)**:
 - **Mètriques quantitatives**: essencialment idèntiques a Linear (run_010) — W1(z), W1(log_edep), bias són comparables
@@ -155,19 +156,47 @@ Amb Model B descartat, es va provar una altra estratègia per millorar la captur
 → [Veure comparativa run_019 vs run_010](compare/compare_019_010.md)
 → [Veure documentació tècnica](basics/Fourier.md) — com funciona Fourier, paràmetres configurables, direccions futures
 
-**run_021** (2026-05-19): Test de **GaussianRandom Fourier Features** per `E_in` (energia incident). En lloc de `Linear(1→64)`, es transforma E_in amb sinus/cosinus de freqüències gaussianes (n_freq=32, scale=8.0). Amb les 7 energies existents per validar el codi abans d'ampliar a 13 energies. Post-run pending.
+**run_021** (2026-05-19): **GaussianRandom Fourier Features** per `E_in` (n_freq=32, scale=8.0) + Fourier edep dim=32. Validació amb 7 energies existents.
+- ✅ **Mètriques excel·lents** — totes OK excepte warnings esperats a 0.025eV
+- ✅ W1(z) millora a 0.025eV (0.528 vs 0.648) i 1eV (0.733 vs 0.681) vs run_019
+- ✅ GaussianRFF funciona correctament — valida la implementació
+- → [Veure run_021 complet](runs/run_021.md)
+
+### Fase 6: Densificació d'energies — Fourier E_in (runs 021→023)
+
+Amb Fourier E_in validat (run_021), es va ampliar progressivament el nombre d'energies de training:
+
+| Run | Energies | Dataset | Iteracions | Status |
+|-----|----------|---------|------------|--------|
+| [run_021](runs/run_021.md) | 7 (validació) | 7E base | 100k | ✅ GaussianRFF validat |
+| [run_022](runs/run_022.md) | 10 (ablació) | 10E +10eV,100eV,10keV | 500k | ✅ Mètriques sòlides |
+| [run_023](runs/run_023.md) | 12 (producció) | 12E log-uniformes | 500k | ✅ **Referència actual** |
+
+**run_022** (ablació 10E): 7 energies base + 10eV, 100eV, 10keV (~1.6M events).
+- ✅ edep_z_bias <1 cm a TOTES les 10 energies
+- ✅ z_mean_bias: ⚠️ WRN només a 0.025eV (-1.17 cm), OK la resta
+- ✅ std ratios OK (0.94–1.04) a totes les energies
+- ⚠️ peak_r0_ratio: ⚠️ WRN a 0.025eV (2.05) i 1eV (1.41)
+- → [Veure run_022 complet (post-run 2026-05-21)](runs/run_022.md)
+
+**run_023** (producció 12E): 12 energies log-uniformes amb gaps de ~3.16x (0.025eV→14.1MeV), ~2.4M events.
+- ✅ **edep_z_bias OK** a totes les energies (0.02–1.53 cm)
+- ✅ **z_mean_bias OK** a totes les energies (−0.33 a +0.30 cm)
+- ✅ **std ratios OK** (0.89–1.01)
+- ✅ **nhits_ratio OK** (0.96–1.09) — correlació correcta
+- ⚠️ **peak_r0**: OK >50eV, ⚠️ WRN 0.025eV (1.747), ❌ BAD 6MeV (0.707), 14.1MeV (0.589)
+- → [Veure run_023 complet](runs/run_023.md)
 
 ---
 
-### Fase 7A: Validació d'energies de training — COMPLETADA (2026-05-18)
+### Fase 7A: Validació d'energies de training — COMPLETADA (2026-05-21)
 
-**Estat**: ✅ **Finalitzada**. run_019 consolidat com a **referència definitiva**.
+**Estat**: ✅ **Finalitzada**. run_023 consolidat com a **referència definitiva**.
 
-**Resum**: S'ha validat el model amb run_019 (Fourier dim=32) en 12 energies d'interpolació (4 + 8) fora del training.
-El model mostra degradació esperada a energies intermèdies altes (>3MeV), però cap fallada crítica.
-Les 7 energies de training actuals són suficients per a MS3.
+**Resum**: S'ha validat el model amb run_023 (Fourier E_in+edep dim=32) en 12 energies log-uniformes.
+Les energies de training actuals (12E) cobreixen tot l'espectre 0.025eV→14.1MeV amb gaps de ~3.16x.
 
-**Energies de training definitives**: `0.025eV, 1eV, 1keV, 100keV, 1MeV, 5MeV, 14.1MeV` (7E)
+**Energies de training definitives**: `0.025eV, 0.15eV, 1eV, 7eV, 50eV, 350eV, 2.5keV, 18keV, 130keV, 900keV, 6MeV, 14.1MeV` (12E)
 
 **Results eval_001_19** (run_019 + 4 energies intermèdies: 10eV, 10keV, 2MeV, 10MeV):
 - ✅ **edep_z_bias OK** a totes les energies (el més important per a MS3)
@@ -185,11 +214,11 @@ Les 7 energies de training actuals són suficients per a MS3.
 
 → [Veure eval_002 complet](evals/eval_002.md)
 
-**Decisió (2026-05-18)**: Les 7 energies de training són **suficients per a MS3**.
-El model està validat. Degradació a 3–8MeV és coneguda i acceptable per a l'ús actual.
+**Decisió (2026-05-20)**: Les 12 energies de training són **suficients per a MS3**.
+El model està validat. Degradació a energies extremes (tèrmiques <1eV, >6MeV) és coneguda i acceptable per a l'ús actual.
 Si es vol millorar el rang MeV en el futur, es prepararà una nova branca amb:
 1. **Petits canvis d'arquitectura** relacionats amb `E_inicial` del neutró
-2. **Training amb més energies** per donar més informació al model
+2. **Densificació addicional** de energies entre 3–10MeV
 
 → [Planificació de la nova branca](../site/future_branch_plan.md)
 
@@ -213,13 +242,15 @@ Energia     | run_010 | run_013 | run_014 | run_015 | run_016 | run_017 | run_01
 
 **Nota**: les energies altes (1–14.1 MeV) tenen correlació z↔edep baixa en TOTS els runs — el model perd la informació d'energia al llarg de z en el règim ràpid.
 
-🏆 **run_019 (Fourier dim=32) és la referència definitiva** (consolidada 2026-05-18). Ha substituït run_010 (Linear) com a baseline per a comparacions futures, ja que captura millor l'estructura espectral fina sense degradar cap mètrica.
+🏆 **run_023 (Fourier E_in + Fourier edep dim=32, 12E)** és la referència definitiva (consolidada 2026-05-20). 12 energies cobrint tot l'espectre. Mètriques OK a totes les energies.
 
 **Imatges**: mapes voxelitzats E(z,r) disponibles a:
 - [Truth](images/truth/) — referència Geant4
 - [run_010](images/runs/voxel_emap_010/) — 7 energies
 - [run_019](images/runs/voxel_emap_019/) — 7 energies
 - [run_020](images/runs/voxel_emap_020/) — 7 energies
+- [run_021](images/runs/voxel_emap_021/) — 7 energies (Fourier E_in)
+- [run_023](images/runs/diagnose_run_run_023/voxel/) — 12 energies (producció)
 - [eval_001](images/runs/voxel_eval/) — 4 energies d'interpolació
 
 ---
@@ -237,8 +268,9 @@ Energia     | run_010 | run_013 | run_014 | run_015 | run_016 | run_017 | run_01
 | 7 | **dim=64 Fourier REFUTAT** | Més freqüències empitjora Peak Sharpness i edep_z_bias a altes energies | run_020 |
 | 8 | **🔒 Arquitectura tancada (2026-05-17)** | Fourier dim=32 és suficient; més coses no milloraran necessàriament. Validar dades abans de canviar arquitectura. | run_019 |
 | 9 | **Fase 7A: Validar energies de training** | Les millores futures (loss espectral, Track 2) es documenten però no s'implementen fins validar que 7 energies no són suficients. | — |
-| 10 | **🏆 Consolidar run_019 com a referència definitiva (2026-05-18)** | 7 energies de training suficients per a MS3. Degradació a >3MeV coneguda i acceptable. Nova branca per a millores MeV (E_inicial + més energies). | run_019, eval_001_19, eval_002_19 |
-| 11 | **Fourier E_in implementat + run_021 executat (2026-05-19)** | GaussianRFF(n_freq=32, scale=8.0) substituïx MLP Linear per E_in. Configurat amb 7 energies existents per validar codi. Proper pas: ampliar a 13 energies amb run_022. | run_021, future_branch_plan |
+| 10 | **🏆 Consolidar run_023 com a referència definitiva (2026-05-20)** | 12 energies de training cobrint tot l'espectre 0.025eV→14.1MeV. GaussianRFF+Fourier edep dim=32. Degradació a energies extremes coneguda i acceptable. | run_023, run_022, run_021 |
+| 11 | **Fourier E_in GaussianRFF ACCEPTAT** | GaussianRFF(n_freq=32, scale=8.0) substituïx MLP Linear per E_in. Validat amb run_021 (7E), adoptat per run_022 (10E) i run_023 (12E). | run_021, run_022, run_023 |
+| 12 | **12 energies log-uniformes per a producció** | Gaps de ~3.16x entre energies. Cobertura completa sense buits. Dataset 12E amb ~2.4M events. | run_023 |
 
 [📚 Més detalls](basics/index.md)
 

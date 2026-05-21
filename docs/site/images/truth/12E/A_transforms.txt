@@ -1,0 +1,14 @@
+N_max_p99: 118
+N_max_p999: 194
+R_max: 20.0000
+columns: r_norm,z_norm,t_norm,edep_norm,partID,procID
+edep_offset_MeV: 0.0000
+log_E_in_mean: -3.1461
+log_E_in_std: 2.7585
+log_edep_mean: -3.5682
+log_edep_std: 2.7278
+log_t_mean: 3.4684
+log_t_std: 1.8483
+t_offset_ns: 0.0010
+z_mean: -20.0035
+z_std: 10.8992

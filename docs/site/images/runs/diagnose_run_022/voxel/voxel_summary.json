@@ -1,0 +1,102 @@
+{
+  "0.025eV": {
+    "spearman_truth": 0.39631446108345153,
+    "spearman_gen": 0.4684248280541485,
+    "mi_truth": 0.2527505625846969,
+    "mi_gen": 0.30642755297811763,
+    "map_pearson_Etotal": 0.8727099118097883,
+    "pearson_emean_z": 0.4606908927114587,
+    "pearson_estd_z": 0.9526799811636568,
+    "estd_ratio_mean": 0.9826892358775976
+  },
+  "1eV": {
+    "spearman_truth": 0.3325118375341962,
+    "spearman_gen": 0.37297389006055987,
+    "mi_truth": 0.22015243403266768,
+    "mi_gen": 0.24382974284626938,
+    "map_pearson_Etotal": 0.9226214531554233,
+    "pearson_emean_z": 0.19847109893146334,
+    "pearson_estd_z": 0.9543043719413359,
+    "estd_ratio_mean": 0.9833561345958514
+  },
+  "10eV": {
+    "spearman_truth": 0.3661578189024324,
+    "spearman_gen": 0.3822046024826933,
+    "mi_truth": 0.36207805971487783,
+    "mi_gen": 0.3679224605123053,
+    "map_pearson_Etotal": 0.9025317651385985,
+    "pearson_emean_z": 0.20758851043179755,
+    "pearson_estd_z": 0.9795210987675729,
+    "estd_ratio_mean": 1.0161248100375921
+  },
+  "100eV": {
+    "spearman_truth": 0.3393859546367145,
+    "spearman_gen": 0.33643185751679205,
+    "mi_truth": 0.3591983359957011,
+    "mi_gen": 0.37800174781265067,
+    "map_pearson_Etotal": 0.9370225990935633,
+    "pearson_emean_z": 0.5154694774827808,
+    "pearson_estd_z": 0.9814994570425186,
+    "estd_ratio_mean": 0.972927805708459
+  },
+  "1keV": {
+    "spearman_truth": 0.2721143892473574,
+    "spearman_gen": 0.27893636770861796,
+    "mi_truth": 0.3540261375361014,
+    "mi_gen": 0.36874030573689137,
+    "map_pearson_Etotal": 0.9328603622837418,
+    "pearson_emean_z": 0.39802915460615523,
+    "pearson_estd_z": 0.9829838618732578,
+    "estd_ratio_mean": 0.9760077172595515
+  },
+  "10keV": {
+    "spearman_truth": 0.22817338589932995,
+    "spearman_gen": 0.2326240924276932,
+    "mi_truth": 0.3473959145783293,
+    "mi_gen": 0.3517999817224233,
+    "map_pearson_Etotal": 0.9047426084306157,
+    "pearson_emean_z": 0.6080673835387604,
+    "pearson_estd_z": 0.9771009397744022,
+    "estd_ratio_mean": 1.0022062402652991
+  },
+  "100keV": {
+    "spearman_truth": 0.09390204540655069,
+    "spearman_gen": 0.09270391727094235,
+    "mi_truth": 0.18513340622731456,
+    "mi_gen": 0.17321230588334294,
+    "map_pearson_Etotal": 0.9878406456394928,
+    "pearson_emean_z": 0.559384238413471,
+    "pearson_estd_z": 0.978409385442121,
+    "estd_ratio_mean": 0.9944172843939609
+  },
+  "1MeV": {
+    "spearman_truth": 0.014802385780005648,
+    "spearman_gen": 0.006655193190376546,
+    "mi_truth": 0.08492280966845728,
+    "mi_gen": 0.09020343181363003,
+    "map_pearson_Etotal": 0.99859558283397,
+    "pearson_emean_z": 0.8674597360401062,
+    "pearson_estd_z": 0.9871094421720564,
+    "estd_ratio_mean": 0.968343414334252
+  },
+  "5MeV": {
+    "spearman_truth": -0.026890584582004457,
+    "spearman_gen": -0.03215732348547088,
+    "mi_truth": 0.024325470928715908,
+    "mi_gen": 0.023495990702643764,
+    "map_pearson_Etotal": 0.9980375033280218,
+    "pearson_emean_z": 0.9686374456533177,
+    "pearson_estd_z": 0.7006789438152015,
+    "estd_ratio_mean": 0.9557356561805431
+  },
+  "14.1MeV": {
+    "spearman_truth": -0.09100011567484195,
+    "spearman_gen": -0.09051290641781155,
+    "mi_truth": 0.018757698884772363,
+    "mi_gen": 0.020679024773339605,
+    "map_pearson_Etotal": 0.9965334708625455,
+    "pearson_emean_z": 0.9650829798122488,
+    "pearson_estd_z": 0.9101523936826031,
+    "estd_ratio_mean": 0.9912694598078157
+  }
+}

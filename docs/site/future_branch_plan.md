@@ -42,7 +42,7 @@ Les 7 energies actuals estan mal distribuïdes en log E (eV):
 
 | Energia | log₁₀(E[eV]) | Gap fins al següent |
 |---------|--------------|----------------------|
-| 0,0025 eV | −2,60 | 2,60 dec |
+| 0,025 eV | −1,61 | 1,61 dec |
 | 1 eV | 0,00 | **3,00 dec** |
 | 1 keV | 3,00 | 2,00 dec |
 | 100 keV | 5,00 | 1,00 dec |
@@ -52,27 +52,26 @@ Les 7 energies actuals estan mal distribuïdes en log E (eV):
 
 El gap més gran (1eV→1keV, 3 dec) coincideix exactament amb la zona on es manifesta el símptoma A. Aquesta correlació gap ↔ error és l'indicador que la causa dominant és densitat de dades, no arquitectura.
 
-### Proposta — 13 energies log-uniformes
+### Proposta — 12 energies log-uniformes
 
 Separació mitjana ≈ 0,81 dec, lleugerament més densa al rang alt (on apareixen processos discrets addicionals com pair production).
 
 | # | E | log₁₀(E[eV]) |
 |---|---|--------------|
-| 1 | 0,0025 eV | −2,60 |
-| 2 | 0,02 eV | −1,70 |
-| 3 | 0,15 eV | −0,82 |
-| 4 | 1 eV | 0,00 |
-| 5 | 7 eV | 0,85 |
-| 6 | 50 eV | 1,70 |
-| 7 | 350 eV | 2,54 |
-| 8 | 2,5 keV | 3,40 |
-| 9 | 18 keV | 4,26 |
-| 10 | 130 keV | 5,11 |
-| 11 | 900 keV | 5,95 |
-| 12 | 6 MeV | 6,78 |
-| 13 | 14,1 MeV | 7,15 |
+| 1 | 0,025 eV | −1,61 |
+| 2 | 0,15 eV | −0,82 |
+| 3 | 1 eV | 0,00 |
+| 4 | 7 eV | 0,85 |
+| 5 | 50 eV | 1,70 |
+| 6 | 350 eV | 2,54 |
+| 7 | 2,5 keV | 3,40 |
+| 8 | 18 keV | 4,26 |
+| 9 | 130 keV | 5,11 |
+| 10 | 900 keV | 5,95 |
+| 11 | 6 MeV | 6,78 |
+| 12 | 14,1 MeV | 7,15 |
 
-Es preserven energies amb interpretació física directa (tèrmica 0,0025 eV, DT 14,1 MeV) i 1 eV / 1 keV com a ancoratges.
+Es preserven energies amb interpretació física directa (tèrmica 0,025 eV, DT 14,1 MeV) i 1 eV / 1 keV com a ancoratges.
 
 **Rang nou de `E_in_norm`:** s'expandirà a aproximadament `[−1,7, +1,7]`. Caldrà recalcular `log_E_mean` i `log_E_std` sobre el nou conjunt i regenerar `transforms.json`.
 
