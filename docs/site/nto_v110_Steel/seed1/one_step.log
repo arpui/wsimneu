@@ -1,0 +1,28 @@
+==============================================================================
+ compare_one_step_v110 — material=Steel
+==============================================================================
+  device=cuda  n_samples=50,000
+  output=docs/site/nto/runs/nto_v110_Steel/seed1/one_step
+
+  elastic_idxs (HE filter): [0, 2, 7, 11, 17, 23, 29, 34, 37, 41, 45]
+
+
+── split = all ──
+[load] runs/nto_v110_Steel/all_seed1/ckpt_final.pt
+  version: V11.0, epoch: 30, material: Steel, val_loss: -4.252580451113837
+  params: 898,334
+  truth: 36,538,602 steps → submostre 50,000
+  gen samples: 50,000
+  log10(E_pre/MeV) range [-9.0, 2.0], 11 bins
+  min_count per bin: 50
+  ✓ reactions_combined.png
+  ✓ sample_counts.png
+  ✓ terminate_prob.png
+  ✓ terminate_per_reaction.png
+  ✓ y_HE.png
+  ✓ cos_theta_HE.png
+  ✓ delta_d.png
+  ✓ edep_HE.png
+  ✓ report.md
+
+[done] output=docs/site/nto/runs/nto_v110_Steel/seed1/one_step

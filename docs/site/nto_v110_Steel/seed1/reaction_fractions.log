@@ -1,0 +1,18 @@
+MATERIAL  : Steel
+GEN       : runs/nto_v110_Steel/v110_all/samples_all_E.h5
+TRUTH DIR : data/geant4/simg4/Steel/truth
+========================================================================
+ Energies a testejar al compare:
+========================================================================
+            1.0MeV  E=  1.000e+06 eV   rtol=0.050  (auto)
+
+  Total: 1 energies
+========================================================================
+
+          1.0MeV  rtol=0.050  (auto)  gen_n=  660,054  truth_n=40,748,061
+    HE    gen=0.9924  truth=0.9754
+    NIn   gen=0.0032  truth=0.0034
+    NCap  gen=0.0043  truth=0.0144
+
+[saved] docs/site/nto/runs/nto_v110_Steel/seed1/reaction_fractions.png
+[saved] docs/site/nto/runs/nto_v110_Steel/seed1/reaction_fractions.json
