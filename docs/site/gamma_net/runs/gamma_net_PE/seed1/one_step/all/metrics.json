@@ -1,0 +1,28 @@
+{
+  "reaction_accuracy": 0.81014,
+  "cos_theta": {
+    "ks_mean": 0.26879230460579634,
+    "pval_mean": 3.708072810567839e-08,
+    "status": "BAD"
+  },
+  "y": {
+    "ks_mean": 0.29705891383567895,
+    "pval_mean": 1.0986822040548288e-08,
+    "status": "BAD"
+  },
+  "delta_d": {
+    "ks_mean": 0.46969477032441787,
+    "pval_mean": 1.1501133478034578e-07,
+    "status": "BAD"
+  },
+  "edep": {
+    "ks_mean": 0.4323634167680604,
+    "pval_mean": 7.959690699141219e-21,
+    "status": "BAD"
+  },
+  "secondary_energy": {
+    "ks_mean": 0.2836409445697203,
+    "pval_mean": 7.288154597454638e-10,
+    "status": "BAD"
+  }
+}

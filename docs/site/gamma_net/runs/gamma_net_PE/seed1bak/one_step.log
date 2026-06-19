@@ -1,0 +1,10 @@
+[ckpt] runs/gamma_net_PE/seed1/ckpt_final.pt
+Traceback (most recent call last):
+  File "/home/albert/projects/simneu/scripts/compare_one_step_gamma.py", line 494, in <module>
+    main()
+  File "/home/albert/projects/simneu/scripts/compare_one_step_gamma.py", line 329, in main
+    model.load_state_dict(ckpt["model"])
+  File "/home/albert/envs/simneu/lib/python3.12/site-packages/torch/nn/modules/module.py", line 2638, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for GammaMarkovNet:
+	size mismatch for material_encoder.embedding.weight: copying a param with shape torch.Size([16, 16]) from checkpoint, the shape in current model is torch.Size([4, 16]).
