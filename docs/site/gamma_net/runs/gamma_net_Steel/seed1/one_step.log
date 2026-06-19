@@ -1,0 +1,17 @@
+[ckpt] runs/gamma_net_Steel/seed1/ckpt_final.pt
+[model] 185,161 params
+[dataset] data/dataset/gamma_transitions_Steel_all.h5
+[truth] 268619 steps
+[sample] 50000 one-steps...
+[sample] done
+  [plot] sample_counts
+  [plot] reactions_combined
+  [plot] terminate_prob
+  [plot] cos_theta
+  [plot] y
+  [plot] delta_d
+  [plot] edep
+  [plot] secondary_energy
+  [ks] computing...
+
+[done] docs/site/gamma_net/runs/gamma_net_Steel/seed1/one_step
